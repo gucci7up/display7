@@ -96,6 +96,12 @@ class ApiService {
   }
 
   // Retorna URL del MP4 según modo PC o APK
+  public getHlsUrl(archivo: string): string {
+    const filename = archivo.split('/').pop() || archivo;
+    const name = filename.replace(/\.[^.]+$/, '');
+    return `/api-proxy/videos/hls/${name}/playlist.m3u8`;
+  }
+
   public getVideoUrl(archivo: string): string {
     const filename = archivo.split('/').pop() || archivo;
     const name = filename.replace(/\.[^.]+$/, '');
