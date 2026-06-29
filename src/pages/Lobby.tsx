@@ -25,7 +25,7 @@ export const Lobby: React.FC<LobbyProps> = ({ currentRace, jackpotAmount, bonusA
     if (!endAt) return;
     const tick = () => {
       const ms = new Date(endAt).getTime() - Date.now();
-      setTimeLeft(Math.max(0, Math.floor(ms / 1000)));
+      setTimeLeft(Math.min(300, Math.max(0, Math.floor(ms / 1000))));
     };
     tick();
     const id = setInterval(tick, 1000);
