@@ -41,29 +41,41 @@ export const VideoRace: React.FC<VideoRaceProps> = ({ currentRace, onVideoEnded 
 
     const hlsUrl = api.getHlsUrl(archivo);
 
+    console.log('[VideoRace] hlsReady:', hlsReady, 'hlsUrl:', hlsUrl);
+
     const tryHls = () => {
       if (!isMounted.current) return;
 
       if (hlsRef.current) { hlsRef.current.destroy(); hlsRef.current = null; }
 
+      // Timeout de seguridad: si en 8s no carga, ir a fallback
+      const timeout = setTimeout(() => {
+        console.log('[VideoRace] timeout - going fallback');
+        if (isMounted.current) setPhase('fallback');
+      }, 8000);
+
       if (Hls.isSupported()) {
+        console.log('[VideoRace] using HLS.js');
         const hls = new Hls({
           maxBufferLength: 30,
           maxMaxBufferLength: 60,
-          maxBufferSize: 30 * 1000 * 1000,
           enableWorker: true,
           lowLatencyMode: false,
         });
         hlsRef.current = hls;
 
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          console.log('[VideoRace] MANIFEST_PARSED');
+          clearTimeout(timeout);
           video.play()
             .then(() => { if (isMounted.current) setPhase('playing'); })
-            .catch(() => { setPhase('fallback'); });
+            .catch((e) => { console.log('[VideoRace] play error:', e); setPhase('fallback'); });
         });
 
         hls.on(Hls.Events.ERROR, (_: any, data: any) => {
+          console.log('[VideoRace] HLS error:', data.type, data.details);
           if (data.fatal && isMounted.current) {
+            clearTimeout(timeout);
             hls.destroy();
             hlsRef.current = null;
             setPhase('fallback');
@@ -74,11 +86,14 @@ export const VideoRace: React.FC<VideoRaceProps> = ({ currentRace, onVideoEnded 
         hls.attachMedia(video);
 
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        console.log('[VideoRace] native HLS');
+        clearTimeout(timeout);
         video.src = hlsUrl;
         video.play()
           .then(() => { if (isMounted.current) setPhase('playing'); })
           .catch(() => setPhase('fallback'));
       } else {
+        clearTimeout(timeout);
         onVideoEnded();
       }
     };
