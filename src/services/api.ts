@@ -99,7 +99,7 @@ class ApiService {
   public getHlsUrl(archivo: string): string {
     const filename = archivo.split('/').pop() || archivo;
     const name = filename.replace(/\.[^.]+$/, '');
-    return `/api-proxy/videos/hls/${name}/playlist.m3u8`;
+    return `/hls/${name}/playlist.m3u8`;
   }
 
   public getVideoUrl(archivo: string): string {
