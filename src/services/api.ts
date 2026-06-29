@@ -14,7 +14,7 @@ const getMode = (): 'pc' | 'apk' => {
 };
 
 const PC_VIDEO_PATH = 'C:/videos/';
-const SERVER_VIDEO_URL = 'https://api.mbsport.lat/videos/';
+const SERVER_VIDEO_URL = '/videos/';
 
 class ApiService {
   private client: AxiosInstance;
@@ -104,6 +104,7 @@ class ApiService {
     }
     return `${SERVER_VIDEO_URL}${name}.mp4`;
   }
+
 
   public getToken(): string | null { return this.token; }
 
