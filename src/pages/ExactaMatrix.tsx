@@ -61,7 +61,7 @@ export const ExactaMatrix: React.FC<ExactaMatrixProps> = ({ liveOdds, currentRac
   useEffect(() => {
     const endAt = currentRace?.saleEndAt || currentRace?.closeAt;
     if (!endAt) return;
-    const tick = () => setTimeLeft(Math.min(300, Math.max(0, Math.floor((new Date(endAt).getTime() - Date.now()) / 1000))));
+    const tick = () => setTimeLeft(Math.max(0, Math.floor((new Date(endAt).getTime() - Date.now()) / 1000)));
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
