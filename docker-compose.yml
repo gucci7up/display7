@@ -12,11 +12,11 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=dokploy-network
-      - traefik.http.routers.display7-web.rule=Host(`display7.mbsport.lat`)
+      - traefik.http.routers.display7-web.rule=Host(`display.mbsport.lat`)
       - traefik.http.routers.display7-web.entrypoints=web
       - traefik.http.routers.display7-web.middlewares=redirect-to-https@file
       - traefik.http.services.display7-web.loadbalancer.server.port=80
-      - traefik.http.routers.display7-websecure.rule=Host(`display7.mbsport.lat`)
+      - traefik.http.routers.display7-websecure.rule=Host(`display.mbsport.lat`)
       - traefik.http.routers.display7-websecure.entrypoints=websecure
       - traefik.http.routers.display7-websecure.tls.certresolver=letsencrypt
       - traefik.http.services.display7-websecure.loadbalancer.server.port=80
