@@ -89,6 +89,7 @@ function App() {
     if (rotationTimerRef.current) { clearTimeout(rotationTimerRef.current); rotationTimerRef.current = null; }
     if (!currentRace) return;
     const status = (currentRace.status ?? 'OPEN').toUpperCase();
+    console.log('[App] status:', status, 'screen:', currentScreen, 'playedId:', playedVideoRaceId, 'raceId:', currentRace?.id);
 
     if (status === 'OPEN') {
       const durations: Record<string, number> = { LOBBY: 10000, ODDS: 30000, HISTORY: 10000 };
