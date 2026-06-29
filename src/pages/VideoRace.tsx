@@ -11,14 +11,18 @@ export const VideoRace: React.FC<VideoRaceProps> = ({ currentRace, onVideoEnded 
 
   useEffect(() => {
     const archivo = currentRace?.video?.archivo;
-    if (!archivo) { onVideoEnded(); return; }
+    console.log('[VideoRace] archivo:', archivo);
+    console.log('[VideoRace] currentRace:', JSON.stringify(currentRace?.video));
+    if (!archivo) { console.log('[VideoRace] sin archivo, saliendo'); onVideoEnded(); return; }
 
     const video = videoRef.current;
     if (!video) { onVideoEnded(); return; }
 
-    video.src = api.getVideoUrl(archivo);
+    const url = api.getVideoUrl(archivo);
+    console.log('[VideoRace] URL:', url);
+    video.src = url;
     video.load();
-    video.play().catch(() => onVideoEnded());
+    video.play().catch((e) => { console.log('[VideoRace] error play:', e); onVideoEnded(); });
   }, [currentRace?.video?.archivo]);
 
   return (
