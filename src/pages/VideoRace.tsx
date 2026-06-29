@@ -105,6 +105,7 @@ export const VideoRace: React.FC<VideoRaceProps> = ({ currentRace, onVideoEnded 
         <video
           ref={videoRef}
           className="w-full h-full object-cover"
+          muted
           playsInline
           onEnded={onVideoEnded}
         />
