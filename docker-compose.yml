@@ -1,0 +1,28 @@
+services:
+  display7:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-https://api.mbsport.lat}
+        VITE_DISPLAY_PIN: ${VITE_DISPLAY_PIN:-1826}
+    expose:
+      - "80"
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=dokploy-network
+      - traefik.http.routers.display7-web.rule=Host(`display7.mbsport.lat`)
+      - traefik.http.routers.display7-web.entrypoints=web
+      - traefik.http.routers.display7-web.middlewares=redirect-to-https@file
+      - traefik.http.services.display7-web.loadbalancer.server.port=80
+      - traefik.http.routers.display7-websecure.rule=Host(`display7.mbsport.lat`)
+      - traefik.http.routers.display7-websecure.entrypoints=websecure
+      - traefik.http.routers.display7-websecure.tls.certresolver=letsencrypt
+      - traefik.http.services.display7-websecure.loadbalancer.server.port=80
+    networks:
+      - dokploy-network
+      - default
+networks:
+  dokploy-network:
+    external: true
