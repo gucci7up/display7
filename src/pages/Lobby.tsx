@@ -20,6 +20,7 @@ export const Lobby: React.FC<LobbyProps> = ({ currentRace, jackpotAmount, bonusA
   const [timeLeft, setTimeLeft] = React.useState(0);
 
   React.useEffect(() => {
+    setTimeLeft(0);
     const endAt = currentRace?.saleEndAt || currentRace?.closeAt;
     if (!endAt) return;
     const tick = () => {
@@ -29,7 +30,7 @@ export const Lobby: React.FC<LobbyProps> = ({ currentRace, jackpotAmount, bonusA
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [currentRace?.saleEndAt, currentRace?.closeAt]);
+  }, [currentRace?.id, currentRace?.saleEndAt, currentRace?.closeAt]);
 
   const mins = String(Math.floor(timeLeft / 60)).padStart(2, '0');
   const secs = String(timeLeft % 60).padStart(2, '0');

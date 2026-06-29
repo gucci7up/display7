@@ -124,6 +124,8 @@ function App() {
   const handleVideoEnded = () => {
     setPlayedVideoRaceId(currentRace?.id ?? null);
     setCurrentScreen('LOBBY');
+    // Forzar fetch inmediato para obtener la nueva carrera
+    fetchData();
   };
 
   if (!unlocked) return <LoginScreen onUnlock={() => setUnlocked(true)} />;
